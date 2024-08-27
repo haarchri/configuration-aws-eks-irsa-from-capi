@@ -1,0 +1,18 @@
+apiVersion: meta.pkg.crossplane.io/v1alpha1
+kind: Configuration
+metadata:
+  name: configuration-aws-eks-irsa-from-capi
+  annotations:
+    meta.crossplane.io/maintainer: haarchri
+    meta.crossplane.io/source: github.com/upbound/configuration-aws-eks-irsa-from-capi
+    meta.crossplane.io/license: Apache-2.0
+spec:
+  crossplane:
+    version: ">=v1.14.1-0"
+  dependsOn:
+    - provider: xpkg.upbound.io/crossplane-contrib/provider-kubernetes
+      # renovate: datasource=github-releases depName=crossplane-contrib/provider-kubernetes
+      version: "v0.14.1"
+    - provider: xpkg.upbound.io/upbound/provider-aws-iam
+      # renovate: datasource=github-releases depName=upbound/provider-aws
+      version: "v1.11.0"

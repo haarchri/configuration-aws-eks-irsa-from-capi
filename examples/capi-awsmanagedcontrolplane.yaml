@@ -1,0 +1,154 @@
+  apiVersion: controlplane.cluster.x-k8s.io/v1beta2
+  kind: AWSManagedControlPlane
+  metadata:
+    name: configuration-aws-eks-irsa-capi
+    namespace: infra
+  spec:
+    additionalTags:
+      Region: us-west-2
+      Version: v1.30.4
+    addons:
+    - conflictResolution: overwrite
+      name: aws-ebs-csi-driver
+      version: v1.33.0-eksbuild.1
+    - conflictResolution: overwrite
+      name: coredns
+      version: v1.11.1-eksbuild.11
+    associateOIDCProvider: true
+    bastion:
+      enabled: false
+    controlPlaneEndpoint:
+      host: https://2C8132353DEF78B7C6A86F2A2079823D.sk1.us-west-2.eks.amazonaws.com
+      port: 443
+    eksClusterName: test
+    endpointAccess:
+      private: false
+      public: true
+    iamAuthenticatorConfig: {}
+    identityRef:
+      kind: AWSClusterControllerIdentity
+      name: default
+    kubeProxy:
+      disable: false
+    logging:
+      apiServer: true
+      audit: true
+      authenticator: false
+      controllerManager: false
+      scheduler: false
+    network:
+      cni:
+        cniIngressRules:
+        - description: cilium vxlan overlay
+          fromPort: 8472
+          protocol: udp
+          toPort: 8472
+      subnets:
+      - availabilityZone: us-west-2a
+        cidrBlock: 10.0.0.0/20
+        isPublic: true
+        natGatewayId: nat-00ad1a7f345c4e485
+        id: subnet-03e12f915ab6b123f
+        routeTableId: rtb-0c6990537d5a4a10f
+        zoneType: availability-zone
+    partition: aws
+    region: us-west-2
+    restrictPrivateSubnets: false
+    roleName: test
+    tokenMethod: iam-authenticator
+    version: v1.30.4
+    vpcCni:
+      disable: true
+  status:
+    addons:
+    - arn: arn:aws:eks:us-west-2:REDACTED:addon/test/aws-ebs-csi-driver/c2c8c82c-e81c-fcda-29f7-6a96477c94b9
+      createdAt: "2024-08-26T20:21:31Z"
+      modifiedAt: "2024-08-26T20:36:37Z"
+      name: aws-ebs-csi-driver
+      status: ACTIVE
+      version: v1.33.0-eksbuild.1
+    - arn: arn:aws:eks:us-west-2:REDACTED:addon/test/coredns/60c8c82d-18ee-c6f7-f60b-63f84517477d
+      createdAt: "2024-08-26T20:21:56Z"
+      modifiedAt: "2024-08-26T20:36:43Z"
+      name: coredns
+      status: ACTIVE
+      version: v1.11.1-eksbuild.11
+    conditions:
+    - lastTransitionTime: "2024-08-27T15:25:30Z"
+      status: "True"
+      type: Ready
+    - lastTransitionTime: "2024-08-26T20:13:23Z"
+      status: "True"
+      type: ClusterSecurityGroupsReady
+    - lastTransitionTime: "2024-08-26T20:22:09Z"
+      status: "True"
+      type: EKSAddonsConfigured
+    - lastTransitionTime: "2024-08-26T20:21:30Z"
+      reason: created
+      severity: Info
+      status: "False"
+      type: EKSControlPlaneCreating
+    - lastTransitionTime: "2024-08-27T15:25:30Z"
+      status: "True"
+      type: EKSControlPlaneReady
+    - lastTransitionTime: "2024-08-26T20:22:09Z"
+      status: "True"
+      type: EKSIdentityProviderConfigured
+    - lastTransitionTime: "2024-08-26T20:22:09Z"
+      status: "True"
+      type: IAMAuthenticatorConfigured
+    - lastTransitionTime: "2024-08-26T20:13:24Z"
+      status: "True"
+      type: IAMControlPlaneRolesReady
+    - lastTransitionTime: "2024-08-26T20:11:17Z"
+      status: "True"
+      type: InternetGatewayReady
+    - lastTransitionTime: "2024-08-26T20:13:27Z"
+      status: "True"
+      type: NatGatewaysReady
+    - lastTransitionTime: "2024-08-26T20:13:23Z"
+      status: "True"
+      type: RouteTablesReady
+    - lastTransitionTime: "2024-08-26T20:11:17Z"
+      status: "True"
+      type: SubnetsReady
+    - lastTransitionTime: "2024-08-26T20:11:13Z"
+      status: "True"
+      type: VpcReady
+    externalManagedControlPlane: true
+    failureDomains:
+      us-west-2a:
+        controlPlane: true
+      us-west-2b:
+        controlPlane: true
+      us-west-2c:
+        controlPlane: true
+    initialized: true
+    networkStatus:
+      natGatewaysIPs:
+      securityGroups:
+        cluster:
+          id: sg-0c38380a7b2e0aced
+          name: eks-cluster-sg-test-788784095
+          tags:
+            Name: eks-cluster-sg-test-788784095
+            aws:eks:cluster-name: test
+            kubernetes.io/cluster/test: owned
+        node:
+          id: sg-0c38380a7b2e0aced
+          name: eks-cluster-sg-test-788784095
+          tags:
+            Name: eks-cluster-sg-test-788784095
+            aws:eks:cluster-name: test
+            kubernetes.io/cluster/test: owned
+        node-eks-additional:
+          id: sg-0ee2b480621772b2d
+          name: test-node-eks-additional
+    oidcProvider:
+      arn: arn:aws:iam::REDACTED:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/1323532A207DEF78B7C6A2C886F9823D
+      trustPolicy: '{  "Version": "2012-10-17",  "Statement": [    {      "Principal":
+        {        "Federated": [          "arn:aws:iam::REDACTED:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/1323532A207DEF78B7C62C8A86F9823D"        ]      },      "Effect":
+        "Allow",      "Action": [        "sts:AssumeRoleWithWebIdentity"      ],      "Condition":
+        {        "ForAnyValue:StringLike": {          "oidc.eks.us-west-2.amazonaws.com/id/1323532A207DEF78B7C6A82C86F9823D:sub":
+        [            "system:serviceaccount:${SERVICE_ACCOUNT_NAMESPACE}:${SERVICE_ACCOUNT_NAME}"          ]        }      }    }  ]}'
+    ready: true
